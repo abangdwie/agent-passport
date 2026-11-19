@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Passport — Free mint for Agent ID holders</title>
+<link rel="icon" href="data:,">
+<meta name="description" content="Agent Passport is a free commemorative NFT for Binance Agent ID holders. One passport per Agent ID, art and metadata fully on-chain. Built for the Agent ID Hackathon 2026.">
+<style>
+  :root { --bg:#05070F; --panel:#0D1226; --line:#1E2547; --text:#E8ECF8; --muted:#9AA3C0; --gold:#FFD166; --cyan:#22D3EE; --violet:#A78BFA; --green:#34D399; --red:#F87171; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; line-height:1.6; }
+  a { color:var(--gold); }
+  .wrap { max-width:960px; margin:0 auto; padding:32px 20px 64px; }
+  header { text-align:center; padding:24px 0 8px; }
+  header h1 { font-size:clamp(28px,6vw,48px); letter-spacing:.35em; font-weight:700; }
+  header p { color:var(--gold); letter-spacing:.3em; font-size:13px; margin-top:8px; }
+  .sub { text-align:center; color:var(--muted); margin:12px 0 32px; font-size:15px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  @media (max-width:760px){ .grid{grid-template-columns:1fr;} }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; }
+  .card img { width:100%; border-radius:12px; display:block; }
+  .card h2 { font-size:16px; letter-spacing:.15em; margin-bottom:12px; }
+  .row { display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px dashed var(--line); font-size:14px; }
+  .row span:first-child { color:var(--muted); }
+  .status { padding:12px; border-radius:10px; font-size:14px; margin:12px 0; display:none; }
+  .status.ok { display:block; background:rgba(52,211,153,.12); border:1px solid var(--green); color:var(--green); }
+  .status.warn { display:block; background:rgba(248,113,113,.12); border:1px solid var(--red); color:var(--red); }
+  .status.info { display:block; background:rgba(255,209,102,.10); border:1px solid var(--gold); color:var(--gold); }
+  button { font-family:inherit; font-size:15px; font-weight:700; letter-spacing:.08em; width:100%; padding:14px; border-radius:12px; border:0; cursor:pointer; background:var(--gold); color:#05070F; margin-top:12px; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  button.secondary { background:transparent; border:1px solid var(--line); color:var(--text); }
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:24px; }
+  @media (max-width:760px){ .steps{grid-template-columns:1fr;} }
+  .step { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; font-size:14px; }
+  .step b { color:var(--gold); display:block; font-size:20px; margin-bottom:6px; }
+  .note { color:var(--muted); font-size:13px; margin-top:24px; }
+  .note li { margin:6px 0 6px 18px; }
+  footer { text-align:center; color:var(--muted); font-size:12px; margin-top:48px; }
+  .mono { word-break:break-all; }
+  #claimedArt { display:none; margin-top:12px; }
+  #claimedArt img { width:100%; border-radius:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>AGENT PASSPORT</h1>
+    <p>AGENT ID HACKATHON &middot; 2026</p>
+  </header>
+  <p class="sub">A free commemorative passport for Agent ID holders. One per Agent ID. Art and metadata live fully on-chain.</p>
+
+  <div class="grid">
+    <div class="card">
+      <img src="assets/sample.png" alt="Agent Passport sample — Genesis #001">
+      <p class="note">Sample: Genesis #001. Your passport shows your own mint number, tier and holder address.</p>
+      <div id="claimedArt"><img id="claimedImg" alt="Your Agent Passport"></div>
+    </div>
+
+    <div class="card">
+      <h2>CLAIM YOUR PASSPORT</h2>
+      <div class="row"><span>Supply</span><span id="supply">…</span></div>
+      <div class="row"><span>Price</span><span>Free (you pay gas only)</span></div>
+      <div class="row"><span>Network</span><span>BNB Chain (56)</span></div>
+      <div class="row"><span>Wallet</span><span id="wallet">Not connected</span></div>
+      <div class="row"><span>Agent ID</span><span id="agentId">—</span></div>
+      <div class="row"><span>Your claim</span><span id="claimState">—</span></div>
+      <div id="status" class="status"></div>
+      <button id="connectBtn">Connect wallet</button>
+      <button id="claimBtn" disabled>Claim passport</button>
+      <button id="switchBtn" class="secondary" style="display:none">Switch to BNB Chain</button>
+      <p class="note">Connect with an injected wallet (MetaMask, Binance Wallet extension, etc.). No QR login, no seed phrase, no approvals — the claim only calls one function and mints to your own address.</p>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><b>1. Hold an Agent ID</b>Claim your .ai name in the Binance App (Wallet &gt; Agent ID). 227,850+ agents already hold one.</div>
+    <div class="step"><b>2. Connect your wallet</b>Use the same wallet that holds your Agent ID. The site only reads your address.</div>
+    <div class="step"><b>3. Claim — free</b>One passport per Agent ID. #1–10 Genesis (gold), #11–100 Pioneer (cyan), the rest Agent (violet).</div>
+  </div>
+
+  <ul class="note">
+    <li>Contract: <a id="contractLink" href="#" target="_blank" rel="noopener">deploys with the hackathon submission — address appears here after launch</a></li>
+    <li>Agent ID registry: <a href="https://bscscan.com/address/0x60b9262456de011f7d15a54cdd8c48baaa8b022f" target="_blank" rel="noopener">0x60b9…022f</a> (SPACE ID Agent ID, BscScan)</li>
+    <li>No admin keys, no fees, no funds held by the contract. Source is open and verified on BscScan.</li>
+    <li>Claiming costs only your own network gas (about $0.003–0.07 depending on gas price).</li>
+  </ul>
+
+  <footer>
+    Built by calmlet (calmlet.ai) for the Agent ID Hackathon. Unofficial community project — not affiliated with or endorsed by Binance.
+  </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
